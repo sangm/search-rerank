@@ -601,6 +601,16 @@ angular.module('app', [])
             }
         }
         $scope.results = SearchService.searchTerm('');
+        $scope.checkedItems = [];
+        $scope.addItem = function(index, item) {
+            item.checked = !item.checked;
+            if ($scope.checkedItems.indexOf(item) === -1)
+                $scope.checkedItems.push(item);
+            if ($scope.checkedItems.length > 5) {
+                var overflowItem = $scope.checkedItems.shift();
+                overflowItem.checked = !overflowItem.checked;
+            }
+        }
         /*
         $scope.$watch('searchQuery', function(query) {
             SearchService.searchTerm(query).then(function(data) {

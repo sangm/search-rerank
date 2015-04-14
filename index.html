@@ -14,8 +14,26 @@
   
   <body ng-app="app">
     <style>
-      .searchbar { margin-top: 10%; text-align: center; }
-      .search-results { margin-top: 10%; }
+     .searchbar { margin-top: 10%; text-align: center; }
+     .search-results { margin-top: 10%; }
+     .search-results li {
+         margin: .4em; 
+         padding: 1em;
+         background: #eee;
+         border-radius: .4em; 
+     }
+     .search-number {
+         text-align: center;
+         font-size: 3em; 
+     }
+     .search-results li:hover {
+         color: #FCFFF5;
+         background-color: #3E606F;
+     }
+     .check-mark {
+         color: #193441
+     }
+     .rank-button { margin: 1em; background: }
     </style>
     
     <div class="container-fluid" ng-controller="SearchController">
@@ -24,13 +42,35 @@
           <input ng-model="searchQuery" type="text" placeholder="Search" class="searchbar form-control" style="border-radius: 3em;">
         </div>
       </div>
+      <div class="row text-center rank-button">
+        <div class="col-md-6 col-md-offset-3">
+            Rerank
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
-          <ol class="search-results">
-            <li ng-repeat="result in results.items | filter:searchQuery">
-              {{result.title}} {{result.snippet}}
+          <ul class="search-results list-unstyled">
+            <li ng-repeat="result in results.items | filter:searchQuery" ng-click="addItem($index, result)">
+                <div class="row">
+                    <div class="col-md-3 search-number">
+                        <div class="row">
+                            <div class="col-md-6 check-mark">
+                                <span ng-show="result.checked"
+                                      class="glyphicon glyphicon-ok"
+                                      aria-hidden="true">
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                {{$index + 1}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        {{result.title}} {{result.snippet}}
+                    </div>
+                </div>
             </li>
-          </ol>
+          </ul>
         </div>
       </div>
     </div>
