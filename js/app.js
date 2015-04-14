@@ -594,18 +594,34 @@ angular.module('app', [])
             return googleData;
         } 
     })
-    .controller("SearchController", function(SearchService, $scope, $http) {
+    .service('Utility', function() {
+        this.combine = function(title, snippet) {
+            console.log(title)
+        }
+    })
+    .controller("SearchController", function(SearchService, Utility, $scope, $http) {
         $scope.filterQuery = function(query) {
             return function(q) {
                 return q.title.match(query) || q.snippet.match(query);
             }
         }
+        $scope.wordOptions = ["Bag of Words", "Set of Words"]
+        $scope.calcOptions = ["Cosine Similarity", "Jaccard Coefficient"]
         $scope.results = SearchService.searchTerm('');
         $scope.checkedItems = [];
-        $scope.addItem = function(index, item) {
+        $scope.rerank = function() {
+            $scope.checkedItems.map(function(item) {
+                Utility.combine(item.title, item.snippet)
+            })
+        }
+        $scope.addItem = function(item) {
             item.checked = !item.checked;
-            if ($scope.checkedItems.indexOf(item) === -1)
+            var index = $scope.checkedItems.indexOf(item);
+            if (index === -1)
                 $scope.checkedItems.push(item);
+            else {
+                $scope.checkedItems.splice(index,1);
+            }
             if ($scope.checkedItems.length > 5) {
                 var overflowItem = $scope.checkedItems.shift();
                 overflowItem.checked = !overflowItem.checked;
