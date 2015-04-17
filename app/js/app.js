@@ -16,6 +16,7 @@ angular.module('app')
         $scope.search = function(query) {
             if (!query || query.length === 0)
                 return;
+            /* $scope.results = SearchService.testSearch(); */
             SearchService.searchTerm(query).then(function(results) {
                 $scope.results = results;
             })
@@ -48,13 +49,6 @@ angular.module('app')
             })
             $scope.checkedItems = [];
         }
-        /*
-        $scope.$watch('searchQuery', function(query) {
-            SearchService.searchTerm(query).then(function(data) {
-                $scope.results = data;
-            })
-        })
-        */
     })
 
 
