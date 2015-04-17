@@ -1,4 +1,4 @@
-var googleData = {
+module.exports = {
     "kind": "customsearch#search",
     "url": {
         "type": "application/json",
@@ -585,55 +585,3 @@ var googleData = {
     ]
 };
 //     return $http.get('https://www.googleapis.com/customsearch/v1?key=AIzaSyDZVACn5_asHlircCDxgoEL594xEyTqQN0&cx=017576662512468239146:omuauf_lfve&q=lectures');
-
-
-
-angular.module('app', [])
-    .service('SearchService', function($http) {
-        this.searchTerm = function(query) {
-            return googleData;
-        } 
-    })
-    .service('Utility', function() {
-        this.combine = function(title, snippet) {
-            console.log(title)
-        }
-    })
-    .controller("SearchController", function(SearchService, Utility, $scope, $http) {
-        $scope.filterQuery = function(query) {
-            return function(q) {
-                return q.title.match(query) || q.snippet.match(query);
-            }
-        }
-        $scope.wordOptions = ["Bag of Words", "Set of Words"]
-        $scope.calcOptions = ["Cosine Similarity", "Jaccard Coefficient"]
-        $scope.results = SearchService.searchTerm('');
-        $scope.checkedItems = [];
-        $scope.rerank = function() {
-            $scope.checkedItems.map(function(item) {
-                Utility.combine(item.title, item.snippet)
-            })
-        }
-        $scope.addItem = function(item) {
-            item.checked = !item.checked;
-            var index = $scope.checkedItems.indexOf(item);
-            if (index === -1)
-                $scope.checkedItems.push(item);
-            else {
-                $scope.checkedItems.splice(index,1);
-            }
-            if ($scope.checkedItems.length > 5) {
-                var overflowItem = $scope.checkedItems.shift();
-                overflowItem.checked = !overflowItem.checked;
-            }
-        }
-        /*
-        $scope.$watch('searchQuery', function(query) {
-            SearchService.searchTerm(query).then(function(data) {
-                $scope.results = data;
-            })
-        })
-        */
-    })
-
-

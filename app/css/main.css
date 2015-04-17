@@ -1,0 +1,21 @@
+.searchbar { margin-top: 10%; text-align: center; }
+.searchbar input { border-radius: 3em; text-align: center; }
+.searchbar .input-group-addon { border-radius: 0 3em 3em 0; }
+.search-results { margin-top: 10%; }
+.search-results li {
+    margin: .4em; 
+    padding: 1em;
+    background: #eee;
+    border-radius: .4em; 
+}
+.search-number {
+    text-align: center;
+    font-size: 3em; 
+}
+.search-results li:hover {
+    color: #FCFFF5;
+    background-color: #3E606F;
+}
+.check-mark {
+    color: #193441
+}
