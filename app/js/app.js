@@ -1,35 +1,11 @@
 var angular = require('angular');
-var cosine = require('cosine');
-var stemmer = require('porter-stemmer').stemmer;
 var _ = require('lodash');
-var googleData = require('./service.js')
 
-angular.module('app', [])
-    .service('SearchService', function($http, $q) {
-        this.query = function(query, start) {
-            return $http.get('https://www.googleapis.com/customsearch/v1?key=AIzaSyDZVACn5_asHlircCDxgoEL594xEyTqQN0&cx=017576662512468239146:omuauf_lfve&q=' + query + '&num=10&start=' + start);
-        }
-        this.searchTerm = function(query) {
-            return $q.all([
-                this.query(query, 1),
-                this.query(query, 20)])
-                .then(function(data) {
-                    var googleData = _.union(data[0].data.items, data[1].data.items)
-                    googleData.forEach(function(result, index) {
-                        result.index = index;
-                    });
-                    return googleData;
-                })
-        } 
-    })
-    .service('Utility', function() {
-        this.combine = function(document) {
-            return document.snippet + document.title;
-        }
-        this.tokenize = function(document) {
-            return document.toLowerCase().split(/\s+/);
-        }
-    })
+angular.module('app', []);
+// services
+require('./service');
+
+angular.module('app')
     .controller("SearchController", function(SearchService, Utility, $scope) {
         $scope.calcOptions = ["Cosine Similarity", "Jaccard Coefficient"]
         $scope.filterQuery = function(query) {
@@ -48,22 +24,8 @@ angular.module('app', [])
         $scope.rerank = function() {
             if ($scope.checkedItems.length === 0)
                 return;
-            var query = Utility.tokenize($scope.checkedItems.map(function(item) {
-                return stemmer(Utility.combine(item))
-            }).join());
-            var documents = $scope.results.sort(function(a, b) {
-                var scoreA, scoreB;
-                a = Utility.tokenize(Utility.combine(a));
-                b = Utility.tokenize(Utility.combine(b));
-                scoreA = cosine(query, a);
-                scoreB = cosine(query, b);
-                
-                if (scoreA > scoreB)
-                    return -1;
-                if (scoreA < scoreB)
-                    return 1;
-                return 0;
-            })
+            var query = Utility.parseItems($scope.checkedItems);
+            Utility.sortItems(query, $scope.results);
             $scope.cleanItems();
         }
 

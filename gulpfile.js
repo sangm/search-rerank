@@ -8,6 +8,7 @@ var connect = require('gulp-connect'),
     concat = require('gulp-concat'),
     ngAnnotate = require('gulp-ng-annotate'),
     sourcemaps = require('gulp-sourcemaps'),
+    babel = require('gulp-babel'),
     livereload = require('gulp-livereload');
 
 gulp.task('clean', function() {
