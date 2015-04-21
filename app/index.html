@@ -22,6 +22,7 @@
                            type="text" 
                            class="form-control" 
                            placeholder="Search"
+                           autofocus
                            required>
                     <span ng-click="search(userQuery)" 
                           class="input-group-addon">
@@ -35,8 +36,10 @@
       <div class="row text-center rank-button">
         <div class="col-md-6 col-md-offset-3">
             <ul class="search-results list-unstyled list-inline">
-                <li ng-repeat="calc in calcOptions">
-                    <div>{{calc}}</div>
+                <li ng-repeat="calc in calcOptions"
+                    ng-class="calc.use ? 'enabled' : 'disabled'"
+                    ng-click="changeCalcOption(calc)">
+                    <div>{{calc.desc}}</div>
                 </li>
             </ul>
             <ul class="search-results list-unstyled list-inline">

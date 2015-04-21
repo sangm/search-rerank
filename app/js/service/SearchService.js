@@ -9,6 +9,7 @@ module.exports = function($http, $q) {
             this.query(query, 1),
             this.query(query, 20)])
             .then(function(data) {
+                console.log(data)
                 var googleData = _.union(data[0].data.items, data[1].data.items)
                 googleData.forEach(function(result, index) {
                     result.index = index;

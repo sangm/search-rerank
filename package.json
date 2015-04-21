@@ -5,10 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "cosine": "0.0.1",
+    "jaccard": "^0.3.0",
     "koa": "^0.19.1",
     "koa-router": "^4.3.2",
     "lodash": "^3.7.0",
-    "porter-stemmer": "^0.9.1"
+    "porter-stemmer": "^0.9.1",
+    "stopwords": "0.0.4"
   },
   "devDependencies": {
     "babel": "^5.1.10",

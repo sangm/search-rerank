@@ -6,8 +6,22 @@ angular.module('app', []);
 require('./service');
 
 angular.module('app')
-    .controller("SearchController", function(SearchService, Utility, $scope) {
-        $scope.calcOptions = ["Cosine Similarity", "Jaccard Coefficient"]
+    .controller("SearchController", function(SearchService, ItemService, Utility, $scope) {
+        $scope.addItem = ItemService.addItem;
+
+        $scope.calcOptions = [
+            {value: "cosine", desc: "Cosine Similarity", use: true},
+            {value: "jaccard", desc: "Jaccard Coefficient", use: false}
+        ]
+        
+        $scope.changeCalcOption = function(calc) {
+            if (calc.use)
+                return;
+            var opt = Utility.filterOptions($scope.calcOptions)
+            calc.use = !calc.use;
+            opt.use = !opt.use;
+        }
+        
         $scope.filterQuery = function(query) {
             return function(q) {
                 return q.title.match(query) || q.snippet.match(query);
@@ -16,39 +30,23 @@ angular.module('app')
         $scope.search = function(query) {
             if (!query || query.length === 0)
                 return;
-            /* $scope.results = SearchService.testSearch(); */
+            /*
+            $scope.results = SearchService.testSearch();
+            */
             SearchService.searchTerm(query).then(function(results) {
                 $scope.results = results;
             })
+            
         }
-        $scope.checkedItems = [];
+        
         $scope.rerank = function() {
-            if ($scope.checkedItems.length === 0)
-                return;
-            var query = Utility.parseItems($scope.checkedItems);
-            Utility.sortItems(query, $scope.results);
-            $scope.cleanItems();
-        }
-
-        $scope.addItem = function(item) {
-            item.checked = !item.checked;
-            var index = $scope.checkedItems.indexOf(item);
-            if (index === -1)
-                $scope.checkedItems.push(item);
-            else {
-                $scope.checkedItems.splice(index,1);
+            var opt = Utility.filterOptions($scope.calcOptions);
+            if (opt.value === "cosine") {
+                ItemService.sort($scope.results);
             }
-            if ($scope.checkedItems.length > 5) {
-                var overflowItem = $scope.checkedItems.shift();
-                overflowItem.checked = !overflowItem.checked;
+            else if (opt.value === "jaccard") {
+                ItemService.jaccard($scope.results);
             }
-        }
-        $scope.cleanItems = function() {
-            $scope.checkedItems.map(function(item) {
-                item.checked = false;
-            })
-            $scope.checkedItems = [];
+            ItemService.cleanItems();
         }
     })
-
-
