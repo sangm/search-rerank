@@ -10,7 +10,6 @@ module.exports = function() {
     }
 
     this.tokenize = function(document, bag) {
-        console.log(document)
         document = document.toLowerCase().split(/\s+/).filter(function(word) {
             return stopwords.indexOf(word) === -1;
         }).map(function(word) {

@@ -31,13 +31,12 @@ angular.module('app')
         $scope.search = function(query) {
             if (!query || query.length === 0)
                 return;
-            $scope.results = SearchService.testSearch();
             /*
+            $scope.results = SearchService.testSearch();
+            */
             SearchService.searchTerm(query).then(function(results) {
                 $scope.results = results;
             })
-            */
-            
         }
         
         $scope.rerank = function() {
@@ -729,13 +728,11 @@ module.exports = function() {
     }
 
     this.tokenize = function(document, bag) {
-        console.log(document)
         document = document.toLowerCase().split(/\s+/).filter(function(word) {
             return stopwords.indexOf(word) === -1;
         }).map(function(word) {
             return stemmer(word);
         });
-        console.log(document);
         if (bag)
             document = _.uniq(document);
         return document;
