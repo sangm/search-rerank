@@ -6,14 +6,11 @@
   "dependencies": {
     "cosine": "0.0.1",
     "jaccard": "^0.3.0",
-    "koa": "^0.19.1",
-    "koa-router": "^4.3.2",
     "lodash": "^3.7.0",
     "porter-stemmer": "^0.9.1",
     "stopwords": "0.0.4"
   },
   "devDependencies": {
-    "babel": "^5.1.10",
     "connect": "^3.3.5",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
@@ -25,7 +22,6 @@
     "gulp-ng-annotate": "^0.5.2",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
-    "koa-livereload": "^0.1.23"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

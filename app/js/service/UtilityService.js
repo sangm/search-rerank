@@ -10,8 +10,11 @@ module.exports = function() {
     }
 
     this.tokenize = function(document, bag) {
+        console.log(document)
         document = document.toLowerCase().split(/\s+/).filter(function(word) {
             return stopwords.indexOf(word) === -1;
+        }).map(function(word) {
+            return stemmer(word);
         });
         if (bag)
             document = _.uniq(document);
@@ -27,9 +30,6 @@ module.exports = function() {
         var items = this.tokenize(items.map(function(item) {
             return self.combine(item);
         }).join(), bag)
-          .map(function(item) {
-              return stemmer(item);
-          });
         return items;
     }
     

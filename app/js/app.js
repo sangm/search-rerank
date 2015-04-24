@@ -36,7 +36,6 @@ angular.module('app')
             SearchService.searchTerm(query).then(function(results) {
                 $scope.results = results;
             })
-            
         }
         
         $scope.rerank = function() {
